@@ -1,13 +1,28 @@
+import React from 'react';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import Home from './pages/Home'
+import Chats from './pages/Chats'
 
 
-function App() {
+
+const App = () => {
+  const router = new createBrowserRouter([
+    {
+      path : "/",
+      element : <Home />
+    },
+    {
+      path : "/chats",
+      element : <Chats />
+    }
+  ]);
+
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        Hello, Namastey !
-      </h1>
+      <RouterProvider router={router} />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+

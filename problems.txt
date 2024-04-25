@@ -10,4 +10,5 @@
  
  2) Arrow functions not working in mongoose schema methods
  - If using mongoose, arrow functions won't work correctly on schema methods because this(keyword) in "arrow function" reference is not same as this(keyword) in "function()"
- - so it's prefferable not to use arrow functions
+ - so it's prefferable not to use arrow functions with mongoose
+ - reference "https://forum.freecodecamp.org/t/why-i-couldnt-user-arrow-function/360754"

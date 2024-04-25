@@ -12,3 +12,10 @@
  - If using mongoose, arrow functions won't work correctly on schema methods because this(keyword) in "arrow function" reference is not same as this(keyword) in "function()"
  - so it's prefferable not to use arrow functions with mongoose
  - reference "https://forum.freecodecamp.org/t/why-i-couldnt-user-arrow-function/360754"
+
+ 3) Error : form submission canceled because the form is not connected
+ - This happens when you give submitHandler function to Button onClick listener
+ - Instead give submitHandler function to "onSubmit" listener of form tag 
+
+4) page reload
+    -in submitHandler use e.preventDefault() whose absence is causing page reload after form submission

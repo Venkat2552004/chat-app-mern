@@ -2,23 +2,53 @@ import React from "react";
 import { useState } from "react";
 import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [visible, setVisible] = useState(false);
-	const hanldeLogin = (e) => {};
+	const navigate = useNavigate();
+
+	const getGuestCreds = () => {
+		setEmail("simp@example.com");
+		setPassword("IamSimp");
+	};
+
+	const handleLogin = async (e) => {
+		if (!email || !password) {
+			return;
+		}
+		e.preventDefault();
+		const formData = { email, password };
+		try {
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			};
+
+			const { data } = await axios.post("/api/user/login", formData, config);
+			console.log(data);
+			localStorage.setItem("userData", JSON.stringify(data));
+			navigate("/chats");
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<Card className='max-w-sm'>
-			<form className='flex flex-col gap-4'>
+			<form onSubmit={handleLogin} className='flex flex-col gap-4'>
 				<div>
 					<div className='mb-2 block'>
-						<Label htmlFor='email1' value='Your email' />
+						<Label htmlFor='login-email' value='Your email' />
 					</div>
 					<TextInput
-						id='email1'
+						id='login-email'
 						type='email'
+						value={email}
 						placeholder='simp@gmail.com'
 						onChange={(e) => setEmail(e.target.value)}
 						required
@@ -26,12 +56,13 @@ const Login = () => {
 				</div>
 				<div>
 					<div className='mb-2 block'>
-						<Label htmlFor='password1' value='Your password' />
+						<Label htmlFor='login-password' value='Your password' />
 					</div>
 					<div className='flex'>
 						<TextInput
 							className='pr-2 w-full'
-							id='password1'
+							id='login-password'
+							value={password}
 							type={visible ? "text" : "password"}
 							onChange={(e) => setPassword(e.target.value)}
 							required
@@ -49,8 +80,14 @@ const Login = () => {
 					<Checkbox id='remember' />
 					<Label htmlFor='remember'>Remember me</Label>
 				</div> */}
-				<Button type='submit' onClick={hanldeLogin}>
+				<Button type='submit' gradientMonochrome='failure'>
 					Login
+				</Button>
+				<Button
+					type='button'
+					gradientMonochrome='failure'
+					onClick={getGuestCreds}>
+					Get Guest Creds
 				</Button>
 			</form>
 		</Card>

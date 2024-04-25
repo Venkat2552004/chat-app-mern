@@ -15,9 +15,11 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error("Existing User found on this email");
 	}
 
-	const user = await User.create({ name, email, password, dp });
+
+	const user = await User.create({ name, email, password, dp: dp !== "" ? dp : undefined });
 
 	if (user) {
+		console.log(`New user with email : ${user.email} is created`.bold.bgCyan);
 		res.status(201).json({
 			_id: user._id,
 			name: user.name,
@@ -52,9 +54,9 @@ const authUser = asyncHandler(async (req, res) => {
 			token: generateToken(user._id),
 		});
 	} else {
-        res.status(400)
-        throw new Error("Invalid Credentials");
-    }
+		res.status(400);
+		throw new Error("Invalid Credentials");
+	}
 });
 
-module.exports = {registerUser, authUser};
+module.exports = { registerUser, authUser };

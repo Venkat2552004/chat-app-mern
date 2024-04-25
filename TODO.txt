@@ -1,3 +1,2 @@
 - Add a way to store dp (profile pic) in mongodb (probably store img in cloud and get url)
-- Add login and sign up funtionalities to front end
-- Add guest user creds to make it easy during interviews
+- Add error handling and show neatly in frontend (like account not found, invalid creds, etc)

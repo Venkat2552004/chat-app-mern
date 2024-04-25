@@ -1,0 +1,13 @@
+1) Client and server communication: 
+ - Happens when client and server are running on different ports (probably during development)
+ - If using create-react-app , in package.json set "proxy" : server url(ex : "http://localhost:5000) (server is running on port 5000)
+ - If using vite , add the snippet below in vite.config.js file
+    server: {
+        proxy: {
+        '/api' : 'http://localhost:3000' (since vite uses port 5173, I set my server to use port 3000)
+        }
+    },
+ 
+ 2) Arrow functions not working in mongoose schema methods
+ - If using mongoose, arrow functions won't work correctly on schema methods because this(keyword) in "arrow function" reference is not same as this(keyword) in "function()"
+ - so it's prefferable not to use arrow functions

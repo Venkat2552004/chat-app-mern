@@ -19,3 +19,13 @@
 
 4) page reload
     -in submitHandler use e.preventDefault() whose absence is causing page reload after form submission
+
+5) Uploading images in mongodb
+    - used the method to convert image into base64 format(an image string) but the resultant string length is too large that the form cannot submit it to the backend
+    - Decided to with cloud service (AWS)
+    - Created a S3 free tire bucket and an IAM user who have all S3 permission
+    - used aws-sdk, mutler and mutler-s3 modules to upload images in aws bucket using IAM user creds
+    - used the image url and stored in mongodb
+
+    - remove all block permission to bucket and use a policy so anyone with link can access the images
+    - remove "acl : public-read" from mutler-s3 boiler plate

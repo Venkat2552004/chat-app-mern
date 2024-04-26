@@ -22,11 +22,9 @@ const Signup = () => {
 	const [dp, setDp] = useState("");
 	const navigate = useNavigate();
 
-	const handleImage = async (file) => {
-		
-	};
 
 
+	
 	const handleSignup = async (e) => {
 		if (!name || !email || !password || !confirmPassword) {
 			return;
@@ -36,11 +34,15 @@ const Signup = () => {
 			return;
 		}
 		e.preventDefault();
-		const formData = { name, email, password, dp };
+		const formData = new FormData();
+		formData.append("name", name);
+		formData.append("email", email);
+		formData.append("password", password);
+		formData.append("dp", dp);
 		try {
 			const config = {
 				headers: {
-					"Content-Type": "application/json",
+					"Content-Type": "multipart/form-data",
 				},
 			};
 
@@ -128,7 +130,7 @@ const Signup = () => {
 						className='ml-5 mr-5'
 						type='file'
 						accept='image/*'
-						onChange={(e) => handleImage(e.target.files[0])}
+						onChange={(e) => setDp(e.target.files[0])}
 					/>
 				</div>
 				{/* <div className='flex items-center gap-2'>

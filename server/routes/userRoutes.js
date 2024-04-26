@@ -1,9 +1,10 @@
 const express = require("express");
-const {registerUser, authUser} = require("../controllers/userControllers");
+const {uploadImage} = require("../middlewares/awsImageUpload");
+const { registerUser, authUser } = require("../controllers/userControllers");
 
 const router = express.Router();
 
-router.route("/signup").post(registerUser);
+router.route("/signup").post(uploadImage, registerUser);
 router.post("/login", authUser);
 
 module.exports = router;

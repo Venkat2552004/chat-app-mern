@@ -3,7 +3,8 @@ const User = require("../models/userModel");
 const generateToken = require("./generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
-	const { name, email, password, dp } = req.body;
+	const { name, email, password, imageUrl } = req.body;
+	
 	if (!name || !email || !password) {
 		res.status(400);
 		throw new Error("All fields are required");
@@ -15,8 +16,12 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error("Existing User found on this email");
 	}
 
-
-	const user = await User.create({ name, email, password, dp: dp !== "" ? dp : undefined });
+	const user = await User.create({
+		name,
+		email,
+		password,
+		dp: imageUrl,
+	});
 
 	if (user) {
 		console.log(`New user with email : ${user.email} is created`.bold.bgCyan);

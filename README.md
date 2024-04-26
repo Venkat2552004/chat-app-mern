@@ -1,8 +1,9 @@
 
-# Gos-simp (A place where simps can gossip)
+# Gossimp (A place where simps can gossip)
 
-This is a Real-Time Chat Application that I'm currently on MERN Stack
+This is a Real-Time Chat Application that is built using MERN Stack
 
+**Status:** In development
 
 ## Tech Stack
 

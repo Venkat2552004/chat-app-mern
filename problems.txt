@@ -27,5 +27,10 @@
     - used aws-sdk, mutler and mutler-s3 modules to upload images in aws bucket using IAM user creds
     - used the image url and stored in mongodb
 
+    -use latest @aws-sdk and mutler because there is a compatibility issue
+
     - remove all block permission to bucket and use a policy so anyone with link can access the images
     - remove "acl : public-read" from mutler-s3 boiler plate
+
+6) Always import middlewares and  functions in routehandler with curly braces around "Ex: const { routehandler1} = require("path")"
+ - see all require statements in routes Folder files

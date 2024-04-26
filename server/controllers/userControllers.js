@@ -4,7 +4,7 @@ const generateToken = require("./generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
 	const { name, email, password, imageUrl } = req.body;
-	
+
 	if (!name || !email || !password) {
 		res.status(400);
 		throw new Error("All fields are required");
@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
 	}
 });
 
-const authUser = asyncHandler(async (req, res) => {
+const authLogin = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		res.status(400);
@@ -64,4 +64,20 @@ const authUser = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { registerUser, authUser };
+const allUsers = asyncHandler(async (req, res) => {
+	const keyword = req.query.search
+		? {
+				$or: [
+					{ name: { $regex: req.query.search, $options: "i" } },
+					{ email: { $regex: req.query.search, $options: "i" } },
+				],
+		  }
+		: {$and:[
+			{_id:{$regex : "^0$0"}} // if no keyword is matched, then storing a regex that difenitely not matches with any object
+		]};
+	// if no user is matched with the keyword, then results empty
+	const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+	res.status(201).json(users);
+});
+
+module.exports = { registerUser, authLogin, allUsers };

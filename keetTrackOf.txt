@@ -1,0 +1,9 @@
+1) Still unsuere what to use in chatName (req.user.name or any other)
+
+const chatData = {
+		chatName: req.user.name,
+		isGroupChat: false,
+		users: [req.user._id, userId],
+	};
+
+2) in the createGroup function in chatControllers.js , while writing frontend for it, make the create button unclickable if selected users count is < 2 (excluding the user who is creating the group)

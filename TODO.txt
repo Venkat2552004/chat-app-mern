@@ -1,2 +1,2 @@
-- Add a way to store dp (profile pic) in mongodb (probably store img in cloud and get url)
 - Add error handling and show neatly in frontend (like account not found, invalid creds, etc)
+- Build frontend for Chats

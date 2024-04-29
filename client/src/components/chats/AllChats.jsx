@@ -1,69 +1,71 @@
 import React, { useEffect } from "react";
-import { Button, Card } from "flowbite-react";
+import { Button, Card, Spinner } from "flowbite-react";
 import { ChatState } from "../../context/ChatProvider";
 import { useState } from "react";
 import ShortToast from "../misc/ShortToast";
 import axios from "axios";
 import { HiPlus } from "react-icons/hi";
 
-
-
 const AllChats = () => {
-
-	const {user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
-	const [loggedUser, setLoggedUser] = useState();
+	const { user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
 	const [showToast, setShowToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
+	const [loadingChats, setLoadingChats] = useState(false);
 	const fetchChats = async () => {
 		try {
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user.token}`
-				}
-			}
-			const {data} = await axios.get('/api/chat', config);
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const { data } = await axios.get("/api/chat", config);
 			setChats(data);
 		} catch (err) {
-			setToastMsg("Error fetching the chats");
+			setToastMsg("Unable to fetch the chats");
 			setShowToast(true);
 		}
 	};
 
 	useEffect(() => {
-		setLoggedUser(JSON.parse(localStorage.getItem("userData")));
 		fetchChats();
 	}, []);
 
 	return (
 		<>
-			<div className='bg-white min-w-[40vw] rounded-md'>
-				<div className='flex justify-between items-center bg-slate-500'>
-					<h2 className='text-black'>My Conversations</h2>
-					<Button onClick={() => createGroup()}>
-						New Group
-						<HiPlus className='h-5 w-5' />
+			<div
+				className={`${
+					selectedChat ? "none" : "flex"
+				} flex-col w-screen h-full bg-white rounded-lg p-2 md:flex md:w-[40%]`}>
+				<div className='flex justify-between items-center bg-slate-200 w-full p-2'>
+					<h2 className='text-black text-2xl font-bold'>Conversations</h2>
+					<Button onClick={() => createGroup()} pill>
+						<HiPlus className='h-4 w-4' />
 					</Button>
 				</div>
-				<div className="flex p-4 bg-neutral-700 h-[95%] overflow-y-hidden">
+				<div className='flex w-full h-full rounded-md overflow-y-scroll'>
 					{chats ? (
-						<div className="w-full bg-blue-400">
+						<div className='items-center bg-slate-200 w-full h-full p-1'>
 							{chats.map((chat) => (
 								<Card
 									key={chat._id}
-									className="mb-4 cursor-pointer"
-									onClick={() => setSelectedChat(chat)}
-								>
-									<p className="text-black">
-										{chat.isGroupChat ? chat.chatName : (loggedUser.name === chat.users[0].name ? chat.users[1].name : chat.users[0].name)}
+									className='m-1 h-14 cursor-pointer'
+									onClick={() => setSelectedChat(chat)}>
+									<p className='text-black'>
+										{chat.isGroupChat
+											? chat.chatName
+											: user.name === chat.users[0].name
+											? chat.users[1].name
+											: chat.users[0].name}
 									</p>
 								</Card>
 							))}
 						</div>
 					) : (
-						<span>Loading</span>
+						<Spinner className='m-auto' />
 					)}
 				</div>
 			</div>
+			{showToast && <ShortToast toastMsg={toastMsg} setOpen={setShowToast} />}
 		</>
 	);
 };

@@ -29,7 +29,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	// if no chat exist between 2 users, then create a new chat now
 	try {
 		var chat = await Chat.create({
-			chatName: req.user.name,
+			chatName: "1-2-1 Chat",
 			isGroupChat: false,
 			users: [req.user._id, userId],
 		});
@@ -47,7 +47,7 @@ const accessChat = asyncHandler(async (req, res) => {
 const fetchChats = asyncHandler(async (req, res) => {
 	try {
 		Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-			.populate("users", "passowrd")
+			.populate("users", "-passowrd")
 			.populate("admin", "-password")
 			.populate("latestMessage")
 			.sort({ updatedAt: -1 })

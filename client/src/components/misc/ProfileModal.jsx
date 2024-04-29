@@ -5,14 +5,20 @@ import { HiEye } from "react-icons/hi";
 const ProfileModal = ({ user, openModal, setOpenModal }) => {
 	return (
 		<>
-			<Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
-				<Modal.Header >{user.name}</Modal.Header>
+			<Modal
+				dismissible
+				placement='center'
+				size='md'
+				show={openModal}
+				onClose={() => setOpenModal(false)}
+				className='px-[10%] pt-[40%] w-screen md:flex md:pt-0 md:px-0 text-lg'>
+				<Modal.Header>{user.name}</Modal.Header>
 				<Modal.Body>
 					<div className='space-y-10 flex flex-col text-sky-950 font-bold items-center'>
 						<img
 							src={user.dp}
 							alt='Profile Pic'
-							className='w-40 h-40 rounded-full mx-auto'
+							className='max-w-40 max-h-40 rounded-full mx-auto'
 						/>
 						<p>{user.email}</p>
 					</div>

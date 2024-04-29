@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Drawer, Spinner } from "flowbite-react";
 import { HiArrowSmRight } from "react-icons/hi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ShortToast from "./ShortToast";
 import axios from "axios";
 import { ChatState } from "../../context/ChatProvider";
@@ -17,10 +17,24 @@ const SideDrawer = ({ open, setIsOpen }) => {
 	const [toastMsg, setToastMsg] = useState("");
 	const {user, setSelectedChat, chats, setChats} = ChatState();
 
-	const handleSearch = async () => {
-		if(search === ""){
+	 useEffect(() => {
+			handleSearch();
+		}, [search]);
+
+	const handleSearchClick = () => {
+		if (search === "") {
 			setToastMsg("Please enter a search query");
 			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+			return;
+		}
+		handleSearch();
+	};
+
+	const handleSearch = async () => {
+		if (search === "") {
 			return;
 		}
 		try{
@@ -33,10 +47,20 @@ const SideDrawer = ({ open, setIsOpen }) => {
 			const {data} = await axios.get(`/api/user?search=${search}`, config);
 			setLoading(false);
 			setResult(data);
+			if(data.length === 0){
+				setToastMsg("No users found");
+				setOpenToast(true);
+				setTimeout(() => {
+					setOpenToast(false);
+				}, 5000);
+			}
 		} catch (err){
 			setLoading(false);
 			setToastMsg("Error fetching users");
 			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
 			return;
 		}
 	};
@@ -65,46 +89,51 @@ const SideDrawer = ({ open, setIsOpen }) => {
 	}
 
 	return (
-		<>
+		<div className='flex items-center'>
 			<Drawer
 				open={open}
 				onClose={handleClose}
 				position='left'
-				className='bg-slate-800'>
+				className='bg-slate-300 w-full h-full sm:w-[500px]'>
 				<Drawer.Header
 					title='Search Users'
 					titleIcon={() => <></>}
-					className='border-b-[2px]'
+					className='text-xl text-black border-b-[2px] border-black '
 				/>
 
 				<Drawer.Items>
-					<div className='flex mt-2 items-center space-x-2'>
+					<div className='flex justify-center space-x-4 mt-3'>
 						<input
 							type='text'
 							placeholder='Type User Details'
 							value={search}
-							onChange={(e) => setSearch(e.target.value)}
+							onChange={(e) => {setSearch(e.target.value)}}
 							className='rounded-full text-black'></input>
-						<Button onClick={handleSearch}>
-							<HiArrowSmRight />
+						<Button onClick={handleSearchClick}>
+							<HiArrowSmRight className='w-5 h-5' />
 						</Button>
 					</div>
 					{loading ? (
-						<span>LOADING</span>
+						<div className='text-center mt-5'>
+							<Spinner aria-label='Center-aligned spinner' size='lg' />
+						</div>
 					) : (
-						result?.map((user) => (
+						<div className=''>
+							{result?.map((user) => (
 							<ChatList
 								key={user._id}
 								user={user}
 								handleFunction={() => {
+									setIsOpen(false);
 									accessChat(user._id);
 								}}
 							/>
-						))
+							))}
+						</div>
 					)}
 					{loadingChat && (
 						<Spinner aria-label='Large spinner example' size='lg' />
-					 )}
+					)}
 				</Drawer.Items>
 				<div>
 					{openToast && (
@@ -112,7 +141,7 @@ const SideDrawer = ({ open, setIsOpen }) => {
 					)}
 				</div>
 			</Drawer>
-		</>
+		</div>
 	);
 };
 

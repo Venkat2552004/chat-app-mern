@@ -21,7 +21,7 @@ const ChatProvider = ({ children }) => {
         } else {
             navigate("/");
         }
-	}, [navigation]);
+	}, [navigate]);
 
 	return (
 		<ChatContext.Provider

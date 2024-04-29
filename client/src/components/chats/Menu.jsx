@@ -3,81 +3,66 @@ import {
 	Avatar,
 	Dropdown,
 	Button,
-	DropdownDivider,
-	Drawer,
+	
 } from "flowbite-react";
-import { HiOutlineSearch } from "react-icons/hi";
-import logo from "../../assets/logo.png";
 import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "../misc/ProfileModal";
 import { useNavigate } from "react-router-dom";
 import SideDrawer from "../misc/SideDrawer";
+import { HiBell, HiOutlineLogout, HiUserAdd } from "react-icons/hi";
 
 const Menu = () => {
-	const [search, setSearch] = useState("");
-	const [searchResult, setSearchresult] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [loadingChat, setLoadingChat] = useState();
+	
 	const { user } = ChatState();
 	const [openModal, setOpenModal] = useState(false);
 	const [modalData, setModalData] = useState(user);
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const navigate = useNavigate();
 
-	const logoutHandler = () => {
+	const handleLogout = () => {
 		localStorage.removeItem("userData");
 		navigate("/");
 	};
 
+
 	return (
 		<div>
-			<nav className='flex justify-between items-center w-screen h-18 p-4 bg-slate-300'>
-				<Button
-					onClick={() => setOpenDrawer(true)}
-					className='items-center rounded-full'>
-					Search User
-					<HiOutlineSearch className='ml-2 h-5 w-4' />
-				</Button>
-				<h3 className='text-black text-2xl font-medium'>Gossimps</h3>
-				<div className='grid grid-flow-col space-x-4'>
-					<Dropdown
-						label='Notifications'
-						dismissOnClick={false}
-						arrowIcon={false}>
-						{/* <Dropdown.Item icon={HiViewGrid}>Dashboard</Dropdown.Item>
-					<DropdownDivider /> */}
-					</Dropdown>
-					<Dropdown
-						label={
-							<Avatar
-								alt='Profile Pic'
-								placeholderInitials={user.name[0] + user.name[1]}
-								img={user.dp}
-								rounded
-							/>
-						}
-						inline>
-						<Dropdown.Item
-							onClick={() => {
-								setModalData(user);
-								setOpenModal(true);
-							}}
-							className='text-lg'>
-							My Profile
-						</Dropdown.Item>
-
-						<DropdownDivider />
-						<Dropdown.Item onClick={logoutHandler} className='text-lg'>
-							Logout{" "}
-						</Dropdown.Item>
+			<nav className='flex justify-between w-[screen - m-4] h-[60px] bg-slate-300 rounded-md px-5 py-3 mx-2 my-2 overflow-hidden'>
+				<div className='flex w-[50%] justify-start space-x-8 sm:space-x-5 '>
+					<Button
+						onClick={() => setOpenDrawer(true)}
+						className='items-center rounded-lg'>
+						<label className='hidden sm:block mr-2'>New Chat</label>
+						<HiUserAdd className='h-5 w-5' />
+					</Button>
+					<Dropdown label={<HiBell className='h-5 w-5' />}
+					dismissOnClick={false} arrowIcon={false}>
+						<Dropdown.Item>Dashboard</Dropdown.Item>
 					</Dropdown>
 				</div>
+
+				<div className='flex w-[50%] justify-end space-x-8 sm:space-x-5'>
+					<Button
+						onClick={() => handleLogout(true)}
+						className='items-center rounded-lg'>
+						<label className='hidden sm:block mr-2'>Logout</label>
+						<HiOutlineLogout className=' h-5 w-5' />
+					</Button>
+
+					<Avatar
+						alt='Profile Pic'
+						placeholderInitials={user.name[0] + user.name[1]}
+						img={user.dp}
+						rounded
+						onClick={() => setOpenModal(true)}
+					/>
+				</div>
 			</nav>
-			<ProfileModal
+			{openModal && <ProfileModal
 				user={modalData}
 				openModal={openModal}
 				setOpenModal={setOpenModal}
-			/>
+			/>}
 			{openDrawer && <SideDrawer open={openDrawer} setIsOpen={setOpenDrawer} />}
 		</div>
 	);

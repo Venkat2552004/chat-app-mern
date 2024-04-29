@@ -32,7 +32,7 @@ const Login = () => {
 			const { data } = await axios.post("/api/user/login", formData, config);
 			console.log(data);
 			localStorage.setItem("userData", JSON.stringify(data));
-			navigate("/chats");
+			window.location.href = "/chats";
 		} catch (error) {
 			console.error(error);
 		}

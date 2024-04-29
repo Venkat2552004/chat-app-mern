@@ -1,28 +1,22 @@
-import React, { useEffect, useState} from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { ChatState } from "../context/ChatProvider";
+import Menu from "../components/chats/Menu";
+import AllChats from "./../components/chats/AllChats";
+import ChatBox from "../components/chats/ChatBox";
 
 const Chats = () => {
+	const { user } = ChatState();
 
-  // const [chats, setChats] = useState([])
+	return (
+		<div className='w-screen'>
+			{user && <Menu />}
+			<div className="flex justify-between p-3 w-screen h-[91.5vh]">
+				{user && <AllChats />}
+				{user && <ChatBox />}
+			</div>
+		</div>
+	);
+};
 
-  // const fetchChats = async () => {
-    
-  // }
-
-  // useEffect(() => {
-  //   fetchChats();
-  // }, [])
-  
-  return (
-    <div>
-      {/* {
-        chats.map((chat) => (
-          <div key = { chat._id }> { chat.chatName } </div>
-        ))
-      } */}
-      This is the chats page
-    </div>
-  )
-}
-
-export default Chats
+export default Chats;

@@ -48,7 +48,7 @@ const Signup = () => {
 
 			const { data } = await axios.post("/api/user/signup", formData, config);
 			localStorage.setItem("userData", JSON.stringify(data));
-			navigate("/chats");
+			window.location.href = "/chats";
 		} catch (error) {
 			console.error(error);
 		}

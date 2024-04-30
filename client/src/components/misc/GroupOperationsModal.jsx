@@ -7,7 +7,7 @@ import { Modal, Button, TextInput, Spinner } from "flowbite-react";
 import axios from "axios";
 import ChatList from "../chats/ChatList";
 
-const GroupOperationsModal = ({ openModal, setOpenModal }) => {
+const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 	const { user, selectedChat, setSelectedChat, reFetch, setReFetch } =
 		ChatState();
 	const [newUsers, setNewUsers] = useState([]);
@@ -67,7 +67,6 @@ const GroupOperationsModal = ({ openModal, setOpenModal }) => {
 		}
 		if (newUsers.length > 0) {
 			try {
-				setLoading(true);
 				const config = {
 					headers: {
 						Authorization: `Bearer ${user.token}`,
@@ -77,13 +76,13 @@ const GroupOperationsModal = ({ openModal, setOpenModal }) => {
 					chatId: selectedChat._id,
 					userIds: JSON.stringify(newUsers.map((user) => user._id)),
 				};
+				setLoading(true);
 				const { data } = await axios.post(
 					"/api/chat/addToGroup",
 					chatDetails,
 					config
 				);
 				setSelectedChat(data);
-				setReFetch(!reFetch);
 				setLoading(false);
 				setToastMsg("Changes Applied successfully");
 				setNewUsers([]);
@@ -185,6 +184,7 @@ const GroupOperationsModal = ({ openModal, setOpenModal }) => {
 				);
 				setSelectedChat(data);
 				setReFetch(!reFetch);
+				fetchMessages();
 				setToastMsg("User removed from group");
 				setOpenToast(true);
 				setTimeout(() => {

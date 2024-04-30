@@ -21,7 +21,6 @@ const AllChats = () => {
 	const [showToast, setShowToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
 	const [openModal, setOpenModal] = useState(false);
-	const [loadingChats, setLoadingChats] = useState(false);
 	const fetchChats = async () => {
 		try {
 			const config = {

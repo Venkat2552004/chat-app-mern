@@ -102,16 +102,17 @@ const renameGroup = asyncHandler(async (req, res) => {
 	}
 });
 const addToGroup = asyncHandler(async (req, res) => {
-	const { chatId, userId } = req.body;
-	const userAdded = await Chat.findByIdAndUpdate(
+	const { chatId } = req.body;
+	const userIds = JSON.parse(req.body.userIds);
+	const usersAdded = await Chat.findByIdAndUpdate(
 		chatId,
-		{ $push: { users: userId } },
+		{ $push: { users: { $each: userIds } } },
 		{ new: true }
 	)
 		.populate("users", "-password")
 		.populate("admin", "-password");
-	if (userAdded) {
-		res.status(201).json(userAdded);
+	if (usersAdded) {
+		res.status(201).json(usersAdded);
 	} else {
 		res.status(400);
 		throw new Error("Failed to add User");

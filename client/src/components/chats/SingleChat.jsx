@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ChatState } from "./../../context/ChatProvider";
 import { Button } from "flowbite-react";
 import { HiArrowNarrowLeft, HiEye } from "react-icons/hi";
-import GroupChatModal from "../misc/GroupChatModal";
+import GroupOperationsModal from "../misc/GroupOperationsModal";
 import ProfileModal from "../misc/ProfileModal";
 import { useState } from "react";
 
@@ -15,12 +15,12 @@ const SingleChat = () => {
 		setReFetch,
 		sencondUser,
 	} = ChatState();
-	const [openGroupChatModal, setOpenGroupChatModal] = useState(false);
+	const [openGroupModal, setOpenGroupModal] = useState(false);
 	const [openProfileModal, setOpenProfileModal] = useState(false);
 
 	const handleViewProfile = () => {
 		if (selectedChat.isGroupChat) {
-			setOpenGroupChatModal(true);
+			setOpenGroupModal(true);
 		} else {
 			setOpenProfileModal(true);
 		}
@@ -54,7 +54,7 @@ const SingleChat = () => {
 					Click on a chat to view messages
 				</div>
 			)}
-			{/* {openGroupChatModal && <GroupChatModal setOpenGroupChatModal={setOpenGroupChatModal} />} */}
+			{openGroupModal && <GroupOperationsModal openModal={openGroupModal} setOpenModal={setOpenGroupModal} />}
 			{openProfileModal && (
 				<ProfileModal
 					user={sencondUser}

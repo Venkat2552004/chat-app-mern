@@ -7,6 +7,7 @@ import ChatBox from "../components/chats/ChatBox";
 
 const Chats = () => {
 	const { user } = ChatState();
+	
 
 	return (
 		<div className='w-screen'>

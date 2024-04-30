@@ -8,7 +8,16 @@ import { HiPlus } from "react-icons/hi";
 import GroupChatModal from "./../misc/GroupChatModal";
 
 const AllChats = () => {
-	const { user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
+	const {
+		user,
+		chats,
+		setChats,
+		selectedChat,
+		setSelectedChat,
+		reFetch,
+		setReFetch,
+		secondUser,
+	} = ChatState();
 	const [showToast, setShowToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
 	const [openModal, setOpenModal] = useState(false);
@@ -30,7 +39,7 @@ const AllChats = () => {
 
 	useEffect(() => {
 		fetchChats();
-	}, []);
+	}, [reFetch]);
 
 	return (
 		<>

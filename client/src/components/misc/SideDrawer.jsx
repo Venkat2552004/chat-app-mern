@@ -15,11 +15,11 @@ const SideDrawer = ({ open, setIsOpen }) => {
 	const [loadingChat, setLoadingChat] = useState(false);
 	const [openToast, setOpenToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
-	const {user, setSelectedChat, chats, setChats} = ChatState();
+	const { user, setSelectedChat, chats, setChats} =  ChatState();
 
-	 useEffect(() => {
-			handleSearch();
-		}, [search]);
+	useEffect(() => {
+		handleSearch();
+	}, [search]);
 
 	const handleSearchClick = () => {
 		if (search === "") {
@@ -37,24 +37,24 @@ const SideDrawer = ({ open, setIsOpen }) => {
 		if (search === "") {
 			return;
 		}
-		try{
+		try {
 			setLoading(true);
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user.token}`
-				}
-			}
-			const {data} = await axios.get(`/api/user?search=${search}`, config);
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const { data } = await axios.get(`/api/user?search=${search}`, config);
 			setLoading(false);
 			setResult(data);
-			if(data.length === 0){
+			if (data.length === 0) {
 				setToastMsg("No users found");
 				setOpenToast(true);
 				setTimeout(() => {
 					setOpenToast(false);
 				}, 5000);
 			}
-		} catch (err){
+		} catch (err) {
 			setLoading(false);
 			setToastMsg("Error fetching users");
 			setOpenToast(true);
@@ -71,22 +71,23 @@ const SideDrawer = ({ open, setIsOpen }) => {
 			const config = {
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${user.token}`
-				}
-			}
-			const {data} = await axios.post('/api/chat', {userId : id}, config);
-			if(!chats.find((chat) => chat._id === data._id)){
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const { data } = await axios.post("/api/chat", { userId: id }, config);
+			if (!chats.find((chat) => chat._id === data._id)) {
 				setChats([data, ...chats]);
 			}
+			// Sort the users in the chat so that logged users comes last (only 2 users)
+			
+
 			setSelectedChat(data);
 			setLoadingChat(false);
-
 		} catch (err) {
 			setToastMsg("Error fetching chats");
 			setOpenToast(true);
-
 		}
-	}
+	};
 
 	return (
 		<div className='flex items-center'>
@@ -107,7 +108,9 @@ const SideDrawer = ({ open, setIsOpen }) => {
 							type='text'
 							placeholder='Type User Details'
 							value={search}
-							onChange={(e) => {setSearch(e.target.value)}}
+							onChange={(e) => {
+								setSearch(e.target.value);
+							}}
 							className='rounded-full text-black'></input>
 						<Button onClick={handleSearchClick}>
 							<HiArrowSmRight className='w-5 h-5' />
@@ -120,14 +123,14 @@ const SideDrawer = ({ open, setIsOpen }) => {
 					) : (
 						<div className=''>
 							{result?.map((user) => (
-							<ChatList
-								key={user._id}
-								user={user}
-								handleFunction={() => {
-									setIsOpen(false);
-									accessChat(user._id);
-								}}
-							/>
+								<ChatList
+									key={user._id}
+									user={user}
+									handleFunction={() => {
+										setIsOpen(false);
+										accessChat(user._id);
+									}}
+								/>
 							))}
 						</div>
 					)}

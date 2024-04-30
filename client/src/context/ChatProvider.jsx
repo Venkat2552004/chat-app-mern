@@ -8,7 +8,19 @@ const ChatProvider = ({ children }) => {
 	const [user, setUser] = useState();
 	const [notification, setNotification] = useState([]);
 	const [chats, setChats] = useState([]);
+	const [reFetch, setReFetch] = useState(false);
     const navigate = useNavigate();
+	const [sencondUser, setSecondUser] = useState();
+
+	useEffect(() => {
+		if (selectedChat) {
+			if (selectedChat.users[0]._id === user._id) {
+				setSecondUser(selectedChat.users[1]);
+			} else {
+				setSecondUser(selectedChat.users[0]);
+			}
+		}
+	}, [selectedChat]);
 
 
 	useEffect(() => {
@@ -34,6 +46,9 @@ const ChatProvider = ({ children }) => {
 				setNotification,
 				chats,
 				setChats,
+				reFetch,
+				setReFetch,
+				sencondUser,
 			}}>
 			{children}
 		</ChatContext.Provider>

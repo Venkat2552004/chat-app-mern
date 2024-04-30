@@ -39,7 +39,7 @@ const Login = () => {
 	};
 
 	return (
-		<Card className='max-w-sm'>
+		<Card className='max-w-sm '>
 			<form onSubmit={handleLogin} className='flex flex-col gap-4'>
 				<div>
 					<div className='mb-2 block'>

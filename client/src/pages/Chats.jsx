@@ -13,7 +13,7 @@ const Chats = () => {
 			{user && <Menu />}
 			<div className="flex justify-between p-3 w-screen h-[91.5vh]">
 				{user && <AllChats />}
-				{/* {user && <ChatBox />} */}
+				{user && <ChatBox />}
 			</div>
 		</div>
 	);

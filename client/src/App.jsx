@@ -27,7 +27,7 @@ const App = () => {
 	]);
 
 	return (
-		<div>
+		<div className='font-sans'>
 			<RouterProvider router={router} />
 		</div>
 	);

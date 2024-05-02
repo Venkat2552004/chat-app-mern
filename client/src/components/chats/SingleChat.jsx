@@ -10,7 +10,6 @@ import ShortToast from "../misc/ShortToast";
 import axios from "axios";
 import ScrollableChat from "../misc/ScrollableChat";
 import io from "socket.io-client";
-import { set } from "mongoose";
 
 const ENDPOINT = "http://localhost:3000";
 var socket, selectedChatCompare;
@@ -95,6 +94,7 @@ const SingleChat = () => {
 
 	const typeHandler = (msg) => {
 		setNewMessage(msg);
+		if(!socketConnected) return;
 
 		if (!typing) {
 			setTyping(true);
@@ -125,6 +125,9 @@ const SingleChat = () => {
 		socket.on("stop typing", () => {
 			setIsTyping(false);
 		});
+		return () => {
+			socket.disconnect();
+		};
 	}, []);
 
 	useEffect(() => {

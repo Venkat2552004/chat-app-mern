@@ -57,22 +57,26 @@ const AllChats = () => {
 					{chats ? (
 						<div className='items-center bg-slate-200 w-full h-full p-1'>
 							{chats.map((chat) => (
-								<Card
+								<div
 									key={chat._id}
-									className='m-1 h-14 cursor-pointer'
+									className='bg-white m-1 h-[10%] cursor-pointer p-3 rounded-md'
 									onClick={() => setSelectedChat(chat)}>
-									<p className='text-black'>
+									<p className='text-black font-bold text-lg'>
 										{chat.isGroupChat
 											? chat.chatName
 											: user.name === chat.users[0].name
 											? chat.users[1].name
 											: chat.users[0].name}
 									</p>
-									{/* <p className='text-black'>
-										{chat.latestMessage.sender.name}: {chat.latestMessage.text}
-									</p> */}
-									{console.log(chat)}
-								</Card>
+									{chat.latestMessage && (
+										<p className='text-black '>
+											<b>{chat.latestMessage.sender.name}</b>:{" "}
+											{chat.latestMessage.content.substring(0, 30)}{" "}
+											{chat.latestMessage.content.length > 30 && "..."}
+										</p>
+									)}
+								</div>
+								
 							))}
 						</div>
 					) : (

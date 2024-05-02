@@ -3,7 +3,6 @@ const Message = require("../models/messageModel");
 const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
 
-
 const allMessages = asyncHandler(async (req, res) => {
 	try {
 		const messages = await Message.find({ chat: req.params.chatId })
@@ -31,20 +30,21 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 	try {
 		var message = await Message.create(newMessage);
-		
-		message = await message.populate("sender", "name email dp")
-		
-	message = await message.populate({
-		path: "chat",
-		select: "chatName isGroupChat users",
-		model: "Chat",
-		populate: {
-			path: "users",
-			select: "name email dp",
-			model: "User",
-		},
-	});
-		res.status(201).json(message)
+
+		message = await message.populate("sender", "name email dp");
+
+		message = await message.populate({
+			path: "chat",
+			select: "chatName isGroupChat users",
+			model: "Chat",
+			populate: {
+				path: "users",
+				select: "name email dp",
+				model: "User",
+			},
+		});
+		await Chat.findByIdAndUpdate(chatId, { latestMessage: message._id });
+		res.status(201).json(message);
 	} catch (error) {
 		res.status(401);
 		throw new Error(error.message);

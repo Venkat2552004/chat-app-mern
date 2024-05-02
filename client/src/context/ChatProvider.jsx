@@ -1,3 +1,4 @@
+import { set } from "mongoose";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +21,7 @@ const ChatProvider = ({ children }) => {
 				setSecondUser(selectedChat.users[0]);
 			}
 		}
+		setReFetch(!reFetch);
 	}, [selectedChat]);
 
 

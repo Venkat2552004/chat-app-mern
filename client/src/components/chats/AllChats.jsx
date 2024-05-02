@@ -48,11 +48,10 @@ const AllChats = () => {
 				} flex-col w-screen h-full bg-white rounded-lg p-2 md:flex md:w-[40%]`}>
 				<div className='flex justify-between items-center bg-slate-200 w-full p-2'>
 					<h2 className='text-black text-2xl font-bold'>Conversations</h2>
-					
-						<Button onClick={() => setOpenModal(true)} pill>
-							<HiPlus className='h-4 w-4' />
-						</Button>
-					
+
+					<Button onClick={() => setOpenModal(true)} pill>
+						<HiPlus className='h-4 w-4' />
+					</Button>
 				</div>
 				<div className='flex w-full h-full rounded-md overflow-y-scroll scrollbar-hide'>
 					{chats ? (
@@ -69,6 +68,10 @@ const AllChats = () => {
 											? chat.users[1].name
 											: chat.users[0].name}
 									</p>
+									{/* <p className='text-black'>
+										{chat.latestMessage.sender.name}: {chat.latestMessage.text}
+									</p> */}
+									{console.log(chat)}
 								</Card>
 							))}
 						</div>
@@ -77,7 +80,13 @@ const AllChats = () => {
 					)}
 				</div>
 			</div>
-			{openModal && <GroupChatModal user={user} openModal={openModal} setOpenModal={setOpenModal} />}
+			{openModal && (
+				<GroupChatModal
+					user={user}
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+				/>
+			)}
 			{showToast && <ShortToast toastMsg={toastMsg} setOpen={setShowToast} />}
 		</>
 	);

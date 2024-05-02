@@ -31,19 +31,19 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 	try {
 		var message = await Message.create(newMessage);
-		message = await (
-			await message.populate("sender", "name email dp")
-		).populate({
-			path: "chat",
-			select: "chatName isGroupChat users",
-			model: "Chat",
-			populate: {
-				path: "users",
-				select: "name email dp",
-				model: "User",
-			},
-		});
-		await Chat.findByIdAndUpdate(req.chatId, { latestMessage: message });
+		
+		message = await message.populate("sender", "name email dp")
+		
+	message = await message.populate({
+		path: "chat",
+		select: "chatName isGroupChat users",
+		model: "Chat",
+		populate: {
+			path: "users",
+			select: "name email dp",
+			model: "User",
+		},
+	});
 		res.status(201).json(message)
 	} catch (error) {
 		res.status(401);

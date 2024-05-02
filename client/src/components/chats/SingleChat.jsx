@@ -10,6 +10,7 @@ import ShortToast from "../misc/ShortToast";
 import axios from "axios";
 import ScrollableChat from "../misc/ScrollableChat";
 import io from "socket.io-client";
+import { set } from "mongoose";
 
 const ENDPOINT = "http://localhost:3000";
 var socket, selectedChatCompare;
@@ -31,7 +32,8 @@ const SingleChat = () => {
 	const [toastMsg, setToastMsg] = useState("");
 	const [showToast, setShowToast] = useState(false);
 	const [socketConnected, setSocketConnected] = useState(false);
-	
+	const [typing, setTyping] = useState(false);
+
 	const handleViewProfile = () => {
 		if (selectedChat.isGroupChat) {
 			setOpenGroupModal(true);
@@ -55,7 +57,7 @@ const SingleChat = () => {
 			);
 			setMessages(data);
 			setLoading(false);
-			socket.emit('join chat', selectedChat._id);
+			socket.emit("join chat", selectedChat._id);
 		} catch (err) {
 			setToastMsg("Unable to fetch messages");
 			setShowToast(true);
@@ -65,10 +67,9 @@ const SingleChat = () => {
 		}
 	};
 
-	
-
 	const sendMessage = async () => {
 		if (!newMessage) return;
+		socket.emit("stop typing", selectedChat._id);
 		try {
 			const config = {
 				headers: {
@@ -81,7 +82,7 @@ const SingleChat = () => {
 			};
 			setNewMessage("");
 			const { data } = await axios.post("/api/message/", msgDetails, config);
-			socket.emit('new message', data);
+			socket.emit("new message", data);
 			setMessages([...messages, data]);
 		} catch (err) {
 			setToastMsg("Unable to send message");
@@ -94,13 +95,35 @@ const SingleChat = () => {
 
 	const typeHandler = (msg) => {
 		setNewMessage(msg);
+
+		if (!typing) {
+			setTyping(true);
+			socket.emit("typing", { chatId: selectedChat._id, senderId: user._id });
+		}
+
+		let lastTypingTime = new Date().getTime();
+		setTimeout(() => {
+			let typingTimer = new Date().getTime();
+			let timeDiff = typingTimer - lastTypingTime;
+			if (timeDiff >= 3000 && !typing) {
+				socket.emit("stop typing", selectedChat._id);
+				setTyping(false);
+			}
+		}, 3000);
 	};
 
 	useEffect(() => {
 		socket = io(ENDPOINT);
 		socket.emit("setup", user);
-		socket.on("connection", () => {
+		socket.on("connected", () => {
 			setSocketConnected(true);
+		});
+		socket.on("typing", () => {
+			setTypingUser(data.senderId);
+			setIsTyping(true);
+		});
+		socket.on("stop typing", () => {
+			setIsTyping(false);
 		});
 	}, []);
 
@@ -116,7 +139,6 @@ const SingleChat = () => {
 				!selectedChatCompare ||
 				selectedChatCompare._id === newMessageRecieved.chat._id
 			) {
-				
 				setMessages([...messages, newMessageRecieved]);
 			} else {
 				//give notification
@@ -125,10 +147,8 @@ const SingleChat = () => {
 		});
 	});
 
-
 	return (
 		<>
-			{console.log("rendered...........")}
 			{selectedChat ? (
 				<>
 					<div className='flex justify-between items-center bg-slate-200 w-full p-2 rounded-md'>
@@ -153,9 +173,14 @@ const SingleChat = () => {
 							</div>
 						) : (
 							<div>
-								<ScrollableChat currentUser={user} messages={messages} />
+								<ScrollableChat
+									currentUser={user}
+									messages={messages}
+									
+								/>
 							</div>
 						)}
+
 						<div className='bg-white w-full h-14 p-3 mt-2 rounded-full flex items-center'>
 							<textarea
 								placeholder='Type your message...'

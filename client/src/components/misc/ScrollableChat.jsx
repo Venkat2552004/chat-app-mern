@@ -1,6 +1,19 @@
 import { isSameSender, isLastMessage } from "../../config/chatLogic";
+import { TypeAnimation } from "react-type-animation";
+import { useEffect, useRef } from "react";
+
 
 const ScrollableChat = ({ messages, currentUser }) => {
+	const messagesEndRef = useRef(null);
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
+
 	return (
 		<div className='h-screen'>
 			<div className='h-full pt-7 overflow-x-hidden overflow-y-auto '>
@@ -33,6 +46,19 @@ const ScrollableChat = ({ messages, currentUser }) => {
 							</span>
 						</div>
 					))}
+				{/* {console.log(currentUser._id, senderId)}
+				{typing && currentUser._id !== senderId && (
+					<div className='flex justify-start mb-2 mt-1'>
+						<div className='w-10 h-10'></div>
+						<TypeAnimation
+							cursor={false}
+							sequence={["Typing", 500, "Typing...", 500]}
+							repeat={Infinity}
+							className='p-2 px-3 ml-3 rounded-lg bg-gray-300 text-black'
+						/>
+					</div>
+				)} */}
+				<div ref={messagesEndRef} />
 			</div>
 		</div>
 	);

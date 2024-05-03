@@ -15,7 +15,7 @@ const ScrollableChat = ({ messages, currentUser }) => {
 	}, [messages]);
 
 	return (
-		<div className='h-screen'>
+		<div className='h-full'>
 			<div className='h-full pt-7 overflow-x-hidden overflow-y-auto '>
 				{messages &&
 					messages.map((msg, i) => (

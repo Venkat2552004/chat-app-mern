@@ -140,7 +140,43 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 		setSelectedUsers([...selectedChat.users, ...newUsers]);
 	}, [newUsers]);
 
-	const handleExitGroup = () => {};
+	const handleExitGroup = () => {
+		if (selectedChat.admin._id === user._id && selectedChat.users.length > 1) {
+			setToastMsg("Remove remaining users first");
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+			return;
+		}
+
+		try {
+			const config = {
+				headers: {
+					Authorization: `Bearer ${user.token}`,
+				},
+			};
+			const chatDetails = {
+				chatId: selectedChat._id,
+				userId: user._id,
+			};
+			axios.post("/api/chat/removeFromGroup", chatDetails, config);
+			setOpenModal(false);
+			setReFetch(!reFetch);
+			setSelectedChat(null);
+			setToastMsg("You left the group, bye bye");
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+		} catch (err) {
+			setToastMsg("Error leaving from group");
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+		}
+	};
 
 	const handleAddUser = async (userToAdd) => {
 		// userToAdd will not be same reference even though it is present in selectedChat.users(so use some)
@@ -154,7 +190,7 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 		}
 
 		// userToAdd will  be same reference even though it is present in selectedChat.users(so we can use includes)
-		if (newUsers.includes(userToAdd)) {
+		if (newUsers.some((user) => user._id === userToAdd._id)) {
 			setToastMsg("User already selected");
 			setOpenToast(true);
 			setTimeout(() => {
@@ -166,7 +202,28 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 	};
 
 	const handleRemoveUser = async (userToRemove) => {
-		if (selectedChat.users.includes(userToRemove)) {
+		if (selectedChat.admin._id !== user._id) {
+			setToastMsg("Only admin can remove users");
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+			return;
+		}
+
+		if (
+			selectedChat.admin._id === userToRemove._id &&
+			selectedChat.users.length > 1
+		) {
+			setToastMsg("Remove remaining users first");
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 5000);
+			return;
+		}
+
+		if (selectedChat.users.some((user) => user._id === userToRemove._id)) {
 			try {
 				const config = {
 					headers: {
@@ -182,9 +239,14 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 					chatDetails,
 					config
 				);
-				setSelectedChat(data);
+				if (selectedChat.users.length === 0) {
+					setSelectedChat(null);
+				} else {
+					setSelectedChat(data);
+				}
 				setReFetch(!reFetch);
-				fetchMessages();
+
+				// after deleting the last user, write api and code to delete the group from db
 				setToastMsg("User removed from group");
 				setOpenToast(true);
 				setTimeout(() => {
@@ -210,16 +272,18 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 				size='md'
 				show={openModal}
 				onClose={() => setOpenModal(false)}
-				className='px-[10%] pt-[40%] w-screen md:flex md:pt-0 md:px-0 text-lg'>
+				className='px-[10%] pt-[40%] w-full md:flex md:pt-0 md:px-0 text-lg'>
 				<Modal.Header>{selectedChat.chatName}</Modal.Header>
 				<Modal.Body className='flex flex-col items-center w-full'>
-					{selectedUsers.map((user) => (
-						<UserBadgeIcon
-							key={user._id}
-							user={user}
-							handleFunction={() => handleRemoveUser(user)}
-						/>
-					))}
+					<div className='flex flex-wrap overflow-y-scroll h-[110px] mb-2 '>
+						{selectedUsers.map((user1) => (
+							user1._id !== user._id && <UserBadgeIcon
+								key={user1._id}
+								user={user1}
+								handleFunction={() => handleRemoveUser(user1)}
+							/>
+						))}
+					</div>
 
 					<form className='space-y-4 w-full px-6'>
 						<TextInput

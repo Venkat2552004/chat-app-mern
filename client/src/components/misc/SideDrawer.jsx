@@ -95,7 +95,7 @@ const SideDrawer = ({ open, setIsOpen }) => {
 				open={open}
 				onClose={handleClose}
 				position='left'
-				className='bg-slate-300 w-full h-full sm:w-[500px]'>
+				className='bg-slate-100 w-full h-full sm:w-[500px]'>
 				<Drawer.Header
 					title='Search Users'
 					titleIcon={() => <></>}
@@ -121,7 +121,7 @@ const SideDrawer = ({ open, setIsOpen }) => {
 							<Spinner aria-label='Center-aligned spinner' size='lg' />
 						</div>
 					) : (
-						<div className=''>
+						<div className='overflow-y-scroll'>
 							{result?.map((user) => (
 								<ChatList
 									key={user._id}

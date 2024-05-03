@@ -15,7 +15,7 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 	const [loading, setLoading] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
 	const [openToast, setOpenToast] = useState(false);
-	const { user, chats, setChats } = ChatState();
+	const { user, chats, setChats, setSelectedChat } = ChatState();
 
 	const handleSubmit = async () => {
 		if (groupChatName === "") {
@@ -53,6 +53,7 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 			);
 			setLoading(false);
 			setChats([data, ...chats]);
+			setSelectedChat(data);
 			setOpenModal(false);
 
 			setToastMsg("New GroupChat Created");
@@ -151,13 +152,16 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 							required
 						/>
 					</form>
-					{selectedUsers?.map((user) => (
-						<UserBadgeIcon
-							key={user._id}
-							user={user}
-							handleFunction={() => handleUserRemove(user)}
-						/>
-					))}
+					<div className="flex flex-wrap overflow-y-scroll">
+						{selectedUsers?.map((user) => (
+							<UserBadgeIcon
+								key={user._id}
+								user={user}
+								handleFunction={() => handleUserRemove(user)}
+							/>
+						))}
+					</div>
+
 					{loading ? (
 						<Spinner
 							aria-label='Large spinner example'
@@ -165,10 +169,9 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 							className='mt-4'
 						/>
 					) : (
-						result?.slice(0, 4).map((user) => (
-							<div className='flex flex-col w-full'>
+						result?.slice(0, 3).map((user) => (
+							<div className='flex flex-col w-full items-center' key={user._id}>
 								<ChatList
-									key={user._id}
 									user={user}
 									handleFunction={() => handleAddUser(user)}
 									className='m-1 h-14 cursor-pointer'
@@ -180,7 +183,7 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 						<ShortToast textMsg={toastMsg} setOpen={setOpenToast} />
 					)}
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className='flex justify-center'>
 					<Button onClick={handleSubmit}>Create Chat</Button>
 				</Modal.Footer>
 			</Modal>

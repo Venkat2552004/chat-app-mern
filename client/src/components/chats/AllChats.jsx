@@ -46,7 +46,7 @@ const AllChats = () => {
 				className={`${
 					selectedChat ? "hidden" : "flex"
 				} flex-col w-screen h-full bg-white rounded-lg p-2 md:flex md:w-[40%]`}>
-				<div className='flex justify-between items-center bg-slate-200 w-full p-2'>
+				<div className='flex justify-between items-center bg-slate-200 w-full p-2 mb-2 rounded-md'>
 					<h2 className='text-black text-2xl font-bold'>Conversations</h2>
 
 					<Button onClick={() => setOpenModal(true)} pill>
@@ -59,7 +59,7 @@ const AllChats = () => {
 							{chats.map((chat) => (
 								<div
 									key={chat._id}
-									className='bg-white m-1 h-[10%] cursor-pointer p-3 rounded-md'
+									className='bg-white m-1 cursor-pointer p-3 rounded-md'
 									onClick={() => setSelectedChat(chat)}>
 									<p className='text-black font-bold text-lg'>
 										{chat.isGroupChat

@@ -160,7 +160,7 @@ const SingleChat = () => {
 							className='flex md:hidden'>
 							<HiArrowNarrowLeft className='h-5 w-5' />
 						</Button>
-						<h2 className='text-black text-2xl font-bold'>
+						<h2 className='text-black text-lg md:text-2xl font-bold'>
 							{selectedChat.isGroupChat
 								? selectedChat.chatName.toUpperCase()
 								: sencondUser?.name.toUpperCase()}

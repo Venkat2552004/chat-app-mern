@@ -13,6 +13,7 @@ const ChatProvider = ({ children }) => {
     const navigate = useNavigate();
 	const [sencondUser, setSecondUser] = useState();
 	const [unreadMessages, setUnreadMessages] = useState({});
+	const [theme, setTheme] = useState("light");
 
 	useEffect(() => {
 		if (selectedChat) {
@@ -54,6 +55,8 @@ const ChatProvider = ({ children }) => {
 				sencondUser,
 				unreadMessages,
 				setUnreadMessages,
+				theme,
+				setTheme
 			}}>
 			{children}
 		</ChatContext.Provider>

@@ -18,6 +18,7 @@ const AllChats = () => {
 		setReFetch,
 		secondUser,
 		unreadMessages,
+		setUnreadMessages
 	} = ChatState();
 	const [showToast, setShowToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
@@ -62,8 +63,14 @@ const AllChats = () => {
 							{chats.map((chat) => (
 								<div
 									key={chat._id}
-									className='bg-white dark:bg-slate-700  m-1 cursor-pointer p-3 rounded-md'
-									onClick={() => setSelectedChat(chat)}>
+									className='bg-white dark:bg-slate-700 m-1 cursor-pointer p-3 rounded-md'
+									onClick={() => {
+										setSelectedChat(chat);
+										setUnreadMessages((prevUnreadMessages) => ({
+											...prevUnreadMessages,
+											[chat._id]: 0,
+										}));
+									}}>
 									<p className='text-foreground-primary font-bold text-lg'>
 										{chat.isGroupChat
 											? chat.chatName

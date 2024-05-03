@@ -4,10 +4,31 @@ const colors = require("colors");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const cors = require('cors')
 require("dotenv").config();
 const app = express();
 
 connectToDB();
+//cors setup
+
+const devOrigin = "http://localhost:5173"
+const prodOrigin = process.env.ORIGIN
+const allowedOrigins = [prodOrigin, devOrigin]; 
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.indexOf(origin) === -1) {
+				const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+				return callback(new Error(msg), false);
+			}
+			return callback(null, true);
+		},
+		credentials : true,
+		methods : ["GET", "POST", "PUT", "DELETE"]
+	})
+);
+
 // use express.json before any use statement
 app.use(express.json());
 
@@ -39,7 +60,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
 	pingTimeout: 30000,
 	cors: {
-		origin: "http://localhost:5173",
+		origin: [prodOrigin, devOrigin],
 	},
 });
 

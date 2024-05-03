@@ -11,6 +11,8 @@ connectToDB();
 // use express.json before any use statement
 app.use(express.json());
 
+
+
 //handle user routes
 app.use("/api/user", userRoutes);
 //handle chat routes
@@ -20,6 +22,11 @@ app.use("/api/message", messageRoutes);
 
 app.get("/", () => {
 	console.log(`API is working fine`.blue.bold);
+});
+
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).send("Something broke!");
 });
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -57,6 +64,7 @@ io.on("connection", (socket) => {
 		chat.users.forEach((user) => {
 			if (user._id == newMessageRecieved.sender._id) return;
 			socket.in(user._id).emit("message received", newMessageRecieved);
+
 		});
 	});
 

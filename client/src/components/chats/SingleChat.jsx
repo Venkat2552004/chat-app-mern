@@ -31,7 +31,7 @@ const SingleChat = () => {
 	const [toastMsg, setToastMsg] = useState("");
 	const [showToast, setShowToast] = useState(false);
 	const [socketConnected, setSocketConnected] = useState(false);
-	const [typing, setTyping] = useState(false);
+	// const [typing, setTyping] = useState(false);
 
 	const handleViewProfile = () => {
 		if (selectedChat.isGroupChat) {
@@ -81,8 +81,10 @@ const SingleChat = () => {
 			};
 			setNewMessage("");
 			const { data } = await axios.post("/api/message/", msgDetails, config);
+			console.log(data);
 			socket.emit("new message", data);
 			setMessages([...messages, data]);
+			setReFetch(!reFetch);
 		} catch (err) {
 			setToastMsg("Unable to send message");
 			setShowToast(true);
@@ -94,22 +96,22 @@ const SingleChat = () => {
 
 	const typeHandler = (msg) => {
 		setNewMessage(msg);
-		if(!socketConnected) return;
+		if (!socketConnected) return;
 
-		if (!typing) {
-			setTyping(true);
-			socket.emit("typing", { chatId: selectedChat._id, senderId: user._id });
-		}
+		// if (!typing) {
+		// 	setTyping(true);
+		// 	socket.emit("typing", { chatId: selectedChat._id, senderId: user._id });
+		// }
 
-		let lastTypingTime = new Date().getTime();
-		setTimeout(() => {
-			let typingTimer = new Date().getTime();
-			let timeDiff = typingTimer - lastTypingTime;
-			if (timeDiff >= 3000 && !typing) {
-				socket.emit("stop typing", selectedChat._id);
-				setTyping(false);
-			}
-		}, 3000);
+		// let lastTypingTime = new Date().getTime();
+		// setTimeout(() => {
+		// 	let typingTimer = new Date().getTime();
+		// 	let timeDiff = typingTimer - lastTypingTime;
+		// 	if (timeDiff >= 3000 && !typing) {
+		// 		socket.emit("stop typing", selectedChat._id);
+		// 		setTyping(false);
+		// 	}
+		// }, 3000);
 	};
 
 	useEffect(() => {
@@ -118,17 +120,17 @@ const SingleChat = () => {
 		socket.on("connected", () => {
 			setSocketConnected(true);
 		});
-		socket.on("typing", () => {
-			setTypingUser(data.senderId);
-			setIsTyping(true);
-		});
-		socket.on("stop typing", () => {
-			setIsTyping(false);
-		});
+		// socket.on("typing", () => {
+		// 	setTypingUser(data.senderId);
+		// 	setIsTyping(true);
+		// });
+		// socket.on("stop typing", () => {
+		// 	setIsTyping(false);
+		// });
 		return () => {
 			socket.disconnect();
 		};
-	}, []);
+	}, [user]);
 
 	useEffect(() => {
 		fetchMessages();
@@ -136,19 +138,19 @@ const SingleChat = () => {
 	}, [selectedChat]);
 
 	useEffect(() => {
-		socket.on("message received", (newMessageRecieved) => {
-			console.log("I am here" + newMessageRecieved);
-			if (
-				!selectedChatCompare ||
-				selectedChatCompare._id === newMessageRecieved.chat._id
-			) {
-				setMessages([...messages, newMessageRecieved]);
+		const messageReceivedHandler = (newMessageRecieved) => {
+			if (selectedChat && selectedChat._id === newMessageRecieved.chat._id) {
+				setMessages((prevMessages) => [...prevMessages, newMessageRecieved]);
 			} else {
-				//give notification
+				// Perform another task
 				console.log("Hii");
 			}
-		});
-	});
+		};
+		socket.on("message received", messageReceivedHandler);
+		return () => {
+			socket.off("message received", messageReceivedHandler);
+		};
+	}, [selectedChatCompare, messages]);
 
 	return (
 		<>
@@ -175,12 +177,8 @@ const SingleChat = () => {
 								<Spinner className='self-center w-full h-full' size='lg' />
 							</div>
 						) : (
-							<div>
-								<ScrollableChat
-									currentUser={user}
-									messages={messages}
-									
-								/>
+							<div className='flex-grow overflow-x-hidden overflow-y-auto'>
+								<ScrollableChat currentUser={user} messages={messages} />
 							</div>
 						)}
 

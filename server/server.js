@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
 	res.status(500).send("Something broke!");
 });
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // saving in server to send to socket io
 const server = app.listen(PORT, () => {

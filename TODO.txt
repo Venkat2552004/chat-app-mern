@@ -1,2 +1,9 @@
-- Add error handling and show neatly in frontend (like account not found, invalid creds, etc)
-- Build frontend for Chats
+For the next version release
+
+- Password validation, Oauth verification for emails
+- latest msg changes in db schema,add a "read" field
+    - after logged in, show new messages
+    - it's only working if i logged in, got a new message
+    - if i logout, got a new msg, logged in, it is not showing as a new message
+    - add grp admmin change features
+    - add block feature

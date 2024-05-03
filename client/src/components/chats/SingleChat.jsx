@@ -22,6 +22,8 @@ const SingleChat = () => {
 		reFetch,
 		setReFetch,
 		sencondUser,
+		unreadMessages,
+		setUnreadMessages,
 	} = ChatState();
 	const [openGroupModal, setOpenGroupModal] = useState(false);
 	const [openProfileModal, setOpenProfileModal] = useState(false);
@@ -31,6 +33,7 @@ const SingleChat = () => {
 	const [toastMsg, setToastMsg] = useState("");
 	const [showToast, setShowToast] = useState(false);
 	const [socketConnected, setSocketConnected] = useState(false);
+
 	// const [typing, setTyping] = useState(false);
 
 	const handleViewProfile = () => {
@@ -142,8 +145,11 @@ const SingleChat = () => {
 			if (selectedChat && selectedChat._id === newMessageRecieved.chat._id) {
 				setMessages((prevMessages) => [...prevMessages, newMessageRecieved]);
 			} else {
-				// Perform another task
-				console.log("Hii");
+				setUnreadMessages((prevUnreadMessages) => ({
+					...prevUnreadMessages,
+					[newMessageRecieved.chat._id]:
+						(prevUnreadMessages[newMessageRecieved.chat._id] || 0) + 1,
+				}));
 			}
 		};
 		socket.on("message received", messageReceivedHandler);

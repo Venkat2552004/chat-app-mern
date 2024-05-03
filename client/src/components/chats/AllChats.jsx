@@ -17,6 +17,7 @@ const AllChats = () => {
 		reFetch,
 		setReFetch,
 		secondUser,
+		unreadMessages,
 	} = ChatState();
 	const [showToast, setShowToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
@@ -68,15 +69,33 @@ const AllChats = () => {
 											? chat.users[1].name
 											: chat.users[0].name}
 									</p>
-									{chat.latestMessage && (
-										<p className='text-black '>
-											<b>{chat.latestMessage.sender.name}</b>:{" "}
-											{chat.latestMessage.content.substring(0, 30)}{" "}
-											{chat.latestMessage.content.length > 30 && "..."}
+									{unreadMessages[chat._id] > 0 ? (
+										<p className='text-black'>
+											<b>{unreadMessages[chat._id]}</b> new messages
 										</p>
+									) : (
+										chat.latestMessage && (
+											<p className='text-black '>
+												{chat.isGroupChat ? (
+													<b>
+														{chat.latestMessage.sender._id === user._id
+															? "You"
+															: chat.latestMessage.sender.name}
+														:{" "}
+													</b>
+												) : (
+													<b>
+														{chat.latestMessage.sender._id === user._id &&
+															"You"}
+														:{" "}
+													</b>
+												)}
+												{chat.latestMessage.content.substring(0, 30)}
+												{chat.latestMessage.content.length > 30 && "..."}
+											</p>
+										)
 									)}
 								</div>
-								
 							))}
 						</div>
 					) : (

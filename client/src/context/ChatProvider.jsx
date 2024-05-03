@@ -12,6 +12,7 @@ const ChatProvider = ({ children }) => {
 	const [reFetch, setReFetch] = useState(false);
     const navigate = useNavigate();
 	const [sencondUser, setSecondUser] = useState();
+	const [unreadMessages, setUnreadMessages] = useState({});
 
 	useEffect(() => {
 		if (selectedChat) {
@@ -51,6 +52,8 @@ const ChatProvider = ({ children }) => {
 				reFetch,
 				setReFetch,
 				sencondUser,
+				unreadMessages,
+				setUnreadMessages,
 			}}>
 			{children}
 		</ChatContext.Provider>

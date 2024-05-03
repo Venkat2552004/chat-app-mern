@@ -162,13 +162,13 @@ const SingleChat = () => {
 		<>
 			{selectedChat ? (
 				<>
-					<div className='flex justify-between items-center bg-slate-200 w-full p-2 rounded-md'>
+					<div className='flex justify-between items-center bg-background-primary  w-full p-2 rounded-md'>
 						<Button
 							onClick={() => setSelectedChat(false)}
 							className='flex md:hidden'>
 							<HiArrowNarrowLeft className='h-5 w-5' />
 						</Button>
-						<h2 className='text-black text-lg md:text-2xl font-bold'>
+						<h2 className='text-black text-lg md:text-2xl font-bold text-foreground-primary'>
 							{selectedChat.isGroupChat
 								? selectedChat.chatName.toUpperCase()
 								: sencondUser?.name.toUpperCase()}
@@ -177,7 +177,7 @@ const SingleChat = () => {
 							<HiEye className='h-5 w-5' />
 						</Button>
 					</div>
-					<div className='flex flex-col bg-slate-200 w-full h-full my-2 p-4 pb-3 rounded-md justify-end overflow-y-scroll'>
+					<div className='flex flex-col bg-background-primary w-full h-full my-2 p-4 pb-3 rounded-md justify-end overflow-y-scroll'>
 						{loading ? (
 							<div className='flex self-center items-center justify-center h-full w-[50%]'>
 								<Spinner className='self-center w-full h-full' size='lg' />
@@ -212,9 +212,9 @@ const SingleChat = () => {
 					</div>
 				</>
 			) : (
-				<div className='flex items-center justify-center w-full h-full text-black text-2xl'>
+				<p className='flex items-center justify-center w-full h-full text-foreground-primary text-2xl'>
 					Click on a chat to view messages
-				</div>
+				</p>
 			)}
 			{openGroupModal && (
 				<GroupOperationsModal

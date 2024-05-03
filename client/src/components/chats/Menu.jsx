@@ -29,7 +29,7 @@ const Menu = () => {
 
 	return (
 		<div>
-			<nav className='flex justify-between w-[screen - m-4] h-[60px] bg-slate-300 rounded-md px-5 py-3 mx-2 my-2 overflow-hidden'>
+			<nav className='flex justify-between w-[screen - m-4] h-[60px] bg-background-primary rounded-md px-5 py-3 mx-2 my-2 overflow-hidden'>
 				<div className='flex w-[50%] justify-start space-x-8 sm:space-x-5 '>
 					<Button
 						onClick={() => setOpenDrawer(true)}

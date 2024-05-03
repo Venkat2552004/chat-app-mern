@@ -36,10 +36,10 @@ const ScrollableChat = ({ messages, currentUser }) => {
 								<div className='w-10 h-10'></div> // Placeholder div
 							)}
 							<span
-								className={`p-2 px-3 ml-3 rounded-lg ${
+								className={`text-foreground-primary p-2 px-3 ml-3 rounded-lg ${
 									msg.sender._id === currentUser._id
 										? "bg-blue-500 text-white"
-										: "bg-gray-300 text-black"
+										: "bg-background-secondary text-black"
 								}`}>
 								{msg.content}
 							</span>

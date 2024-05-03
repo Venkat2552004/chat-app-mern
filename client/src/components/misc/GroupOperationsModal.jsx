@@ -273,16 +273,21 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 				show={openModal}
 				onClose={() => setOpenModal(false)}
 				className='px-[10%] pt-[40%] w-full md:flex md:pt-0 md:px-0 text-lg'>
-				<Modal.Header>{selectedChat.chatName}</Modal.Header>
-				<Modal.Body className='flex flex-col items-center w-full'>
+				<Modal.Header className='bg-background-primary'>
+					{selectedChat.chatName}
+				</Modal.Header>
+				<Modal.Body className='flex flex-col items-center w-full bg-background-primary'>
 					<div className='flex flex-wrap overflow-y-scroll h-[110px] mb-2 '>
-						{selectedUsers.map((user1) => (
-							user1._id !== user._id && <UserBadgeIcon
-								key={user1._id}
-								user={user1}
-								handleFunction={() => handleRemoveUser(user1)}
-							/>
-						))}
+						{selectedUsers.map(
+							(user1) =>
+								user1._id !== user._id && (
+									<UserBadgeIcon
+										key={user1._id}
+										user={user1}
+										handleFunction={() => handleRemoveUser(user1)}
+									/>
+								)
+						)}
 					</div>
 
 					<form className='space-y-4 w-full px-6'>
@@ -307,8 +312,10 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 							className='mt-4'
 						/>
 					) : (
-						result?.slice(0, 4).map((user) => (
-							<div className='flex flex-col w-full' key={user._id}>
+						result?.slice(0, 3).map((user) => (
+							<div
+								className='flex flex-col w-full bg-background-secondary mt-3 rounded-md'
+								key={user._id}>
 								<ChatList
 									user={user}
 									handleFunction={() => handleAddUser(user)}
@@ -321,7 +328,7 @@ const GroupOperationsModal = ({ openModal, setOpenModal, fetchMessages }) => {
 						<ShortToast textMsg={toastMsg} setOpen={setOpenToast} />
 					)}
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className='bg-background-primary flex items-center justify-between'>
 					<Button onClick={handleSubmit}>Apply Changes</Button>
 					<Button color='failure' onClick={handleExitGroup}>
 						Leave Group

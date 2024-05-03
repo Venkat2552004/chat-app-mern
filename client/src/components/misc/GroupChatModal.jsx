@@ -128,7 +128,7 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 	};
 
 	return (
-		<>
+		<div>
 			<Modal
 				dismissible
 				placement='center'
@@ -136,8 +136,10 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 				show={openModal}
 				onClose={() => setOpenModal(false)}
 				className='px-[10%] pt-[40%] w-screen md:flex md:pt-0 md:px-0 text-lg'>
-				<Modal.Header>New Group Chat</Modal.Header>
-				<Modal.Body className='flex flex-col items-center w-full'>
+				<Modal.Header className='bg-background-primary'>
+					New Group Chat
+				</Modal.Header>
+				<Modal.Body className='bg-background-primary flex flex-col items-center w-full'>
 					<form className='space-y-4 w-full px-6'>
 						<TextInput
 							placeholder='Chat name'
@@ -152,7 +154,7 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 							required
 						/>
 					</form>
-					<div className="flex flex-wrap overflow-y-scroll">
+					<div className='flex flex-wrap overflow-y-scroll'>
 						{selectedUsers?.map((user) => (
 							<UserBadgeIcon
 								key={user._id}
@@ -170,7 +172,9 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 						/>
 					) : (
 						result?.slice(0, 3).map((user) => (
-							<div className='flex flex-col w-full items-center' key={user._id}>
+							<div
+								className='flex flex-col w-full bg-background-secondary mt-3 rounded-md'
+								key={user._id}>
 								<ChatList
 									user={user}
 									handleFunction={() => handleAddUser(user)}
@@ -183,11 +187,11 @@ const GroupChatModal = ({ openModal, setOpenModal }) => {
 						<ShortToast textMsg={toastMsg} setOpen={setOpenToast} />
 					)}
 				</Modal.Body>
-				<Modal.Footer className='flex justify-center'>
+				<Modal.Footer className='bg-background-primary flex justify-center'>
 					<Button onClick={handleSubmit}>Create Chat</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

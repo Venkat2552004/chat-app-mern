@@ -46,9 +46,11 @@ const AllChats = () => {
 			<div
 				className={`${
 					selectedChat ? "hidden" : "flex"
-				} flex-col w-screen h-full bg-white rounded-lg p-2 md:flex md:w-[40%]`}>
-				<div className='flex justify-between items-center bg-slate-200 w-full p-2 mb-2 rounded-md'>
-					<h2 className='text-black text-2xl font-bold'>Conversations</h2>
+				} flex-col w-screen h-full bg-background-secondary rounded-lg p-2 md:flex md:w-[40%]`}>
+				<div className='flex justify-between items-center bg-background-primary w-full p-2 mb-2 rounded-md'>
+					<p className='text-foreground-primary text-2xl font-bold'>
+						Conversations
+					</p>
 
 					<Button onClick={() => setOpenModal(true)} pill>
 						<HiPlus className='h-4 w-4' />
@@ -56,13 +58,13 @@ const AllChats = () => {
 				</div>
 				<div className='flex w-full h-full rounded-md overflow-y-scroll scrollbar-hide'>
 					{chats ? (
-						<div className='items-center bg-slate-200 w-full h-full p-1'>
+						<div className='items-center bg-background-primary w-full h-full p-1'>
 							{chats.map((chat) => (
 								<div
 									key={chat._id}
-									className='bg-white m-1 cursor-pointer p-3 rounded-md'
+									className='bg-white dark:bg-slate-700  m-1 cursor-pointer p-3 rounded-md'
 									onClick={() => setSelectedChat(chat)}>
-									<p className='text-black font-bold text-lg'>
+									<p className='text-foreground-primary font-bold text-lg'>
 										{chat.isGroupChat
 											? chat.chatName
 											: user.name === chat.users[0].name
@@ -70,12 +72,12 @@ const AllChats = () => {
 											: chat.users[0].name}
 									</p>
 									{unreadMessages[chat._id] > 0 ? (
-										<p className='text-black'>
+										<p className='text-foreground-primary'>
 											<b>{unreadMessages[chat._id]}</b> new messages
 										</p>
 									) : (
 										chat.latestMessage && (
-											<p className='text-black '>
+											<p className='text-foreground-primary '>
 												{chat.isGroupChat ? (
 													<b>
 														{chat.latestMessage.sender._id === user._id

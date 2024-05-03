@@ -121,18 +121,19 @@ const SideDrawer = ({ open, setIsOpen }) => {
 							<Spinner aria-label='Center-aligned spinner' size='lg' />
 						</div>
 					) : (
-						<div className='overflow-y-scroll'>
-							{result?.map((user) => (
+						result?.map((user) => (
+							<div
+								className='flex flex-col w-full bg-background-secondary mt-3 rounded-md overflow-y-scroll'
+								key={user._id}>
 								<ChatList
-									key={user._id}
 									user={user}
 									handleFunction={() => {
 										setIsOpen(false);
 										accessChat(user._id);
 									}}
 								/>
-							))}
-						</div>
+							</div>
+						))
 					)}
 					{loadingChat && (
 						<Spinner aria-label='Large spinner example' size='lg' />

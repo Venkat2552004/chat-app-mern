@@ -7,7 +7,7 @@ const ChatBox = () => {
 		<div
 			className={`${
 				selectedChat ? "flex" : "hidden"
-			} flex-col w-screen h-full bg-white rounded-lg p-2 pb-0 md:flex md:w-[59%]`}>
+			} flex-col w-screen h-full bg-background-secondary rounded-lg p-2 pb-0 md:flex md:w-[59%]`}>
 			<SingleChat />
 		</div>
 	);

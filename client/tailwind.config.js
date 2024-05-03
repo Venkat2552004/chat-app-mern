@@ -12,6 +12,16 @@ export default {
 			fontFamily: {
 				sans: ['"Open Sans"', "sans-serif"],
 			},
+			colors: {
+				foreground: {
+					primary: "var(--color-foreground-primary)",
+					secondary:"var(--color-foreground-secondary)",
+				},
+				background: {
+					primary: "var(--color-background-primary)",
+					secondary:"var(--color-background-secondary)",
+				},
+			},
 		},
 	},
 	plugins: [flowbite.plugin()],

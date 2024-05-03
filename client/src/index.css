@@ -15,10 +15,20 @@
   
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+
+  --color-foreground-primary: black;
+  --color-background-primary: rgb(203 213 225);
+  --color-background-secondary: rgb(228 228 231);
   
   /* background-color: #242424; */
   /* background-color: black; */
   
+}
+
+.dark{
+  --color-foreground-primary: white;
+  --color-background-primary: rgb(30 41 59);
+  --color-background-secondary: rgb(51 65 80);
 }
 
 

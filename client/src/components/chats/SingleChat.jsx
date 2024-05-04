@@ -11,7 +11,8 @@ import axios from "axios";
 import ScrollableChat from "../misc/ScrollableChat";
 import io from "socket.io-client";
 
-const ENDPOINT = "https://gossimps-5a36d44411bc.herokuapp.com";
+//const ENDPOINT = "https://gossimps-5a36d44411bc.herokuapp.com";
+const ENDPOINT = "https://gossimps.onrender.com";
 var socket, selectedChatCompare;
 
 const SingleChat = () => {
@@ -99,21 +100,6 @@ const SingleChat = () => {
 	const typeHandler = (msg) => {
 		setNewMessage(msg);
 		if (!socketConnected) return;
-
-		// if (!typing) {
-		// 	setTyping(true);
-		// 	socket.emit("typing", { chatId: selectedChat._id, senderId: user._id });
-		// }
-
-		// let lastTypingTime = new Date().getTime();
-		// setTimeout(() => {
-		// 	let typingTimer = new Date().getTime();
-		// 	let timeDiff = typingTimer - lastTypingTime;
-		// 	if (timeDiff >= 3000 && !typing) {
-		// 		socket.emit("stop typing", selectedChat._id);
-		// 		setTyping(false);
-		// 	}
-		// }, 3000);
 	};
 
 	useEffect(() => {

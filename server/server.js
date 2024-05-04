@@ -43,9 +43,12 @@ const server = app.listen(PORT, () => {
 });
 
 const io = require("socket.io")(server, {
-	pingTimeout: 30000,
+	pingTimeout: 60000,
 	cors: {
-		origin: "https://gossimps-5a36d44411bc.herokuapp.com/",
+		origin: [
+			"https://gossimps-5a36d44411bc.herokuapp.com/",
+			"https://gossimps.onrender.com/",
+		],
 	},
 });
 

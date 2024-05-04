@@ -119,17 +119,26 @@ const SingleChat = () => {
 	useEffect(() => {
 		socket = io(ENDPOINT);
 		socket.emit("setup", user);
+
 		socket.on("connected", () => {
 			setSocketConnected(true);
 		});
-		// socket.on("typing", () => {
-		// 	setTypingUser(data.senderId);
-		// 	setIsTyping(true);
-		// });
-		// socket.on("stop typing", () => {
-		// 	setIsTyping(false);
-		// });
+
+		// Handle the "ping" event
+		const pingHandler = () => {
+			socket.emit("pong", "pong");
+		};
+		socket.on("ping", pingHandler);
+
+		// Handle disconnection
+		socket.on("disconnect", () => {
+			console.log("Socket disconnected");
+			setSocketConnected(false);
+		});
+
 		return () => {
+			// Remove the "ping" event listener when the component unmounts
+			socket.off("ping", pingHandler);
 			socket.disconnect();
 		};
 	}, [user]);

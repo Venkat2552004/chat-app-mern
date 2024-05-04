@@ -45,12 +45,17 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
 	pingTimeout: 30000,
 	cors: {
-		origin: "http://localhost:3000",
+		origin: "https://gossimps-5a36d44411bc.herokuapp.com/",
 	},
 });
 
 io.on("connection", (socket) => {
 	console.log(`Socket Connection established successfully`.blue);
+
+	const pingInterval = setInterval(() => {
+		socket.emit("ping", "ping");
+	}, 20000);
+
 	socket.on("setup", (userData) => {
 		socket.join(userData._id);
 		socket.emit("connected");
@@ -77,5 +82,9 @@ io.on("connection", (socket) => {
 	socket.off("setup", () => {
 		console.log("USER DISCONNECTED");
 		socket.leave(userData._id);
+	});
+
+	socket.on("disconnect", () => {
+		clearInterval(pingInterval);
 	});
 });

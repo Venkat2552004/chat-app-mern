@@ -10,7 +10,6 @@ import {
 import { HiEye, HiEyeOff, HiExclamation } from "react-icons/hi";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
 	const [name, setName] = useState("");
@@ -20,7 +19,6 @@ const Signup = () => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [visibleConfirmPassoword, setVisibleConfirmPassword] = useState(false);
 	const [dp, setDp] = useState("");
-	const navigate = useNavigate();
 
 
 

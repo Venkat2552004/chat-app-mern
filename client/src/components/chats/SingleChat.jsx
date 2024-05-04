@@ -11,7 +11,7 @@ import axios from "axios";
 import ScrollableChat from "../misc/ScrollableChat";
 import io from "socket.io-client";
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "https://gossimps-5a36d44411bc.herokuapp.com";
 var socket, selectedChatCompare;
 
 const SingleChat = () => {
@@ -84,7 +84,6 @@ const SingleChat = () => {
 			};
 			setNewMessage("");
 			const { data } = await axios.post("/api/message/", msgDetails, config);
-			console.log(data);
 			socket.emit("new message", data);
 			setMessages([...messages, data]);
 			setReFetch(!reFetch);

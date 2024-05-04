@@ -4,7 +4,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "dev" : "nodemon server/server.js"
+  },
+  "engine" : {
+    "node" : "21.7.3"
   },
   "author": "Venkata Mahesh",
   "license": "ISC",

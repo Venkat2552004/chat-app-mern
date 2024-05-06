@@ -1,9 +1,10 @@
 
-# Gossimp (A place where simps can gossip)
+# Gossimps (A place where simps can gossip)
 
 This is a Real-Time Chat Application that is built using MERN Stack
 
-**Status:** In development
+**Status:** Deployed and ready to use
+Visit **gossimps.onrender.com**
 
 ## Tech Stack
 
@@ -12,4 +13,6 @@ This is a Real-Time Chat Application that is built using MERN Stack
 **Server:** Node js, Express js, Socket.io, JWT
 
 **Database:** MongoDB
+
+**Cloud:** AWS (Only used S3)
 

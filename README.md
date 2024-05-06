@@ -5,7 +5,7 @@ This is a Real-Time Chat Application that is built using MERN Stack
 
 **Status:** Deployed and ready to use
 
-Visit **[a link](gossimps.onrender.com)**
+Visit **![Gossimps](https://gossimps.onrender.com/)**
 
 ## Tech Stack
 

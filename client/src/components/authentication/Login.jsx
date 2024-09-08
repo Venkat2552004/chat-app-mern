@@ -12,8 +12,8 @@ const Login = () => {
 	const navigate = useNavigate();
 
 	const getGuestCreds = () => {
-		setEmail("simp@example.com");
-		setPassword("IamSimp");
+		setEmail("john@gmail.com");
+		setPassword("john@123");
 	};
 
 	const handleLogin = async (e) => {
@@ -49,7 +49,7 @@ const Login = () => {
 						id='login-email'
 						type='email'
 						value={email}
-						placeholder='simp@gmail.com'
+						placeholder='john@gmail.com'
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>

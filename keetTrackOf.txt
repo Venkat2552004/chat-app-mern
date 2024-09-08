@@ -1,4 +1,4 @@
-1) Still unsuere what to use in chatName (req.user.name or any other)
+1) Still unsure what to use in chatName (req.user.name or any other)
 
 const chatData = {
 		chatName: req.user.name,

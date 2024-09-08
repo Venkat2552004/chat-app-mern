@@ -60,6 +60,7 @@ const Menu = () => {
 						img={user.dp}
 						rounded
 						onClick={() => setOpenModal(true)}
+						className="cursor-pointer"
 					/>
 				</div>
 			</nav>

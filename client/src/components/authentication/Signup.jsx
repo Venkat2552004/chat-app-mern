@@ -63,7 +63,7 @@ const Signup = () => {
 						id='signup-name'
 						onChange={(e) => setName(e.target.value)}
 						type='text'
-						placeholder='Simper'
+						placeholder='John'
 						required
 					/>
 					<div className='mb-2 block'>
@@ -72,7 +72,7 @@ const Signup = () => {
 					<TextInput
 						id='signup-email'
 						type='email'
-						placeholder='simp@gmail.com'
+						placeholder='john@gmail.com'
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>

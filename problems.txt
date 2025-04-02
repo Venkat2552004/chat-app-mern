@@ -1,36 +1,43 @@
-1) Client and server communication: 
- - Happens when client and server are running on different ports (probably during development)
- - If using create-react-app , in package.json set "proxy" : server url(ex : "http://localhost:5000) (server is running on port 5000)
- - If using vite , add the snippet below in vite.config.js file
-    server: {
-        proxy: {
-        '/api' : 'http://localhost:3000' (since vite uses port 5173, I set my server to use port 3000)
-        }
-    },
- 
- 2) Arrow functions not working in mongoose schema methods
- - If using mongoose, arrow functions won't work correctly on schema methods because this(keyword) in "arrow function" reference is not same as this(keyword) in "function()"
- - so it's prefferable not to use arrow functions with mongoose
- - reference "https://forum.freecodecamp.org/t/why-i-couldnt-user-arrow-function/360754"
+1) Client and Server Communication:
+    - Issue: Happens when client and server are running on different ports (common during development).
+    - Solution:
+      - If using `create-react-app`, set `"proxy": "server_url"` in `package.json` (e.g., `"http://localhost:5000"` if the server runs on port 5000).
+      - If using `vite`, add the following snippet to `vite.config.js`:
+         ```javascript
+         server: {
+              proxy: {
+                    '/api': 'http://localhost:3000' // Vite uses port 5173, server set to port 3000
+              }
+         }
+         ```
 
- 3) Error : form submission canceled because the form is not connected
- - This happens when you give submitHandler function to Button onClick listener
- - Instead give submitHandler function to "onSubmit" listener of form tag 
+2) Arrow Functions in Mongoose Schema Methods:
+    - Issue: Arrow functions don't work correctly in Mongoose schema methods because `this` in arrow functions doesn't refer to the schema instance.
+    - Solution: Avoid using arrow functions in schema methods. Use regular functions instead.
+    - Reference: [FreeCodeCamp Forum](https://forum.freecodecamp.org/t/why-i-couldnt-user-arrow-function/360754)
 
-4) page reload
-    -in submitHandler use e.preventDefault() whose absence is causing page reload after form submission
+3) Error: "Form submission canceled because the form is not connected":
+    - Issue: Happens when the `submitHandler` function is assigned to a Button's `onClick` listener.
+    - Solution: Assign the `submitHandler` function to the `onSubmit` listener of the `<form>` tag.
 
-5) Uploading images in mongodb
-    - used the method to convert image into base64 format(an image string) but the resultant string length is too large that the form cannot submit it to the backend
-    - Decided to with cloud service (AWS)
-    - Created a S3 free tire bucket and an IAM user who have all S3 permission
-    - used aws-sdk, mutler and mutler-s3 modules to upload images in aws bucket using IAM user creds
-    - used the image url and stored in mongodb
+4) Page Reload on Form Submission:
+    - Issue: Missing `e.preventDefault()` in the `submitHandler` causes the page to reload.
+    - Solution: Use `e.preventDefault()` in the `submitHandler` to prevent the default form submission behavior.
 
-    -use latest @aws-sdk and mutler because there is a compatibility issue
+5) Uploading Images to MongoDB:
+    - Issue: Converting images to base64 results in a string too large for form submission.
+    - Solution:
+      - Use a cloud service like AWS S3 for image storage.
+      - Steps:
+         1. Create an S3 free-tier bucket and an IAM user with full S3 permissions.
+         2. Use `aws-sdk`, `multer`, and `multer-s3` modules to upload images to the S3 bucket using IAM credentials.
+         3. Store the image URL in MongoDB.
+      - Notes:
+         - Use the latest versions of `@aws-sdk` and `multer` to avoid compatibility issues.
+         - Remove all block permissions from the bucket and apply a policy to allow public access via the image link.
+         - Remove `"acl: public-read"` from the `multer-s3` boilerplate.
 
-    - remove all block permission to bucket and use a policy so anyone with link can access the images
-    - remove "acl : public-read" from mutler-s3 boiler plate
-
-6) Always import middlewares and  functions in routehandler with curly braces around "Ex: const { routehandler1} = require("path")"
- - see all require statements in routes Folder files
+6) Importing Middlewares and Functions in Route Handlers:
+    - Best Practice: Always use curly braces when importing middlewares and functions.
+      - Example: `const { routeHandler1 } = require("path");`
+    - Action: Review all `require` statements in the `routes` folder files.

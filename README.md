@@ -1,6 +1,7 @@
 # Gossimp (A place where simps can gossip)
 
 This is a Real-Time Chat Application built using the MERN Stack.
+The project is live at [Click here](https://gossimps.onrender.com)
 
 **Status:** In development
 
